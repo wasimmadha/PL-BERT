@@ -69,10 +69,10 @@ def phonemize(text, global_phonemizer, tokenizer):
         if "@" in word and len(word) > 1: # remove "@"
             if "@" in word and len(word) > 1:
                 phonemes.append(word.replace('@', ''))
-                input_ids.append(tokenizer.encode(word.replace('@', ''))[0])
+                input_ids.append(tokenizer.encode(text=word.replace('@', '')))
                 continue
         
-        input_ids.append(tokenizer.encode(word)[0])
+        input_ids.append(tokenizer.encode(text=word))
         phonemes.append(phoneme)
         
     assert len(input_ids) == len(phonemes)
