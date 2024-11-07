@@ -17,6 +17,7 @@ from torch.utils.data import DataLoader
 
 from text_utils import TextCleaner
 from utils import align_subtokens_to_phonemes
+from transformers import AutoTokenizer
 
 import logging
 logger = logging.getLogger(__name__)
@@ -27,8 +28,8 @@ random.seed(1)
 
 class FilePathDataset(torch.utils.data.Dataset):
     def __init__(self, dataset,
-                 token_maps="token_maps.pkl",
-                 tokenizer="transfo-xl-wt103",
+                 token_maps,
+                 tokenizer,
                  word_separator=3039, 
                  token_separator=" ", 
                  token_mask="M", 
@@ -47,8 +48,7 @@ class FilePathDataset(torch.utils.data.Dataset):
         self.word_separator = word_separator
         self.token_separator = token_separator
         self.token_mask = token_mask
-        self.tokenizer = tokenizer
-        
+        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer)
         with open(token_maps, 'rb') as handle:
             self.token_maps = pickle.load(handle)     
             
@@ -115,9 +115,6 @@ class FilePathDataset(torch.utils.data.Dataset):
         phoneme = self.text_cleaner(phoneme)
         labels = self.text_cleaner(labels)
         words = [self.token_maps[w]['token'] for w in words]
-        
-        assert len(phoneme) == len(words)
-        assert len(phoneme) == len(labels)
         
         phonemes = torch.LongTensor(phoneme)
         labels = torch.LongTensor(labels)
