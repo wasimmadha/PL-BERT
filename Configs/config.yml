@@ -1,18 +1,20 @@
-log_dir: "Checkpoint"
+log_dir: "en_hi_phonemes"
 mixed_precision: "fp16"
-data_folder: "wikipedia_20220301.processed"
-batch_size: 16
-save_interval: 5000
+data_folder: "wikipedia_20220301.en.processed"
+batch_size: 32
+save_interval: 20000
 log_interval: 10
 num_process: 1 # number of GPUs
-num_steps: 1000000
+num_steps: 2000000
+epochs: 80
+experiment_name: en_hi_training
 
 dataset_params:
     tokenizer: "bert-base-multilingual-cased"
     token_separator: " " # token used for phoneme separator (space)
     token_mask: "M" # token used for phoneme mask (M)
     word_separator: 102 # token used for word separator (<formula>)
-    token_maps: "token_maps.pkl" # token map path
+    token_maps: "new_token_maps.pkl" # token map path
     
     max_mel_length: 512 # max phoneme length
     

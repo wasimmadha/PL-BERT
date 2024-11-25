@@ -116,6 +116,9 @@ class FilePathDataset(torch.utils.data.Dataset):
         labels = self.text_cleaner(labels)
         words = [self.token_maps[w]['token'] for w in words]
         
+        if len(words) < len(phoneme):
+            words.extend([0] * (len(phoneme) - len(words)))
+
         phonemes = torch.LongTensor(phoneme)
         labels = torch.LongTensor(labels)
         words = torch.LongTensor(words)
